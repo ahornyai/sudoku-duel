@@ -1,40 +1,24 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
+import { getSudoku } from "../helper/sudoku";
 
-const createRandomGrid = () => {
-  const grid = [];
+const sudoku = getSudoku();
+const grid = sudoku.board_string_to_grid(sudoku.generate("easy")).map((row) =>
+  row.map((cell) => (cell === "." ? 0 : parseInt(cell)))
+);
+const unmodifiableElements = grid
 
-  for (let i = 0; i < 9; i++) {
-    const row = [];
-
-    for (let j = 0; j < 9; j++) {
-      row.push(Math.floor(Math.random() * 10) - 1);
-    }
-
-    grid.push(row);
-  }
-
-  return grid;
-}
-
-const grid = createRandomGrid();
 
 export const SudokuGrid = () => {
-  const unmodifiableElements = [
-    [1, 1], [5, 2], [6, 8], [2, 3]
-  ]
   const [selectedElement, setSelectedElement] = useState([0, 0]);
   const gridElement = [];
 
   for (let i = 0; i < 9; i++) {
     const row = [];
     for (let j = 0; j < 9; j++) {
-      const isUnmodifiable = unmodifiableElements.some(
-        (element) => element[0] === i && element[1] === j
-      );
-      //const isUnmodifiable = Math.random() > 0.5;
+      const isUnmodifiable = unmodifiableElements[i][j] !== 0;
       const isSelected = selectedElement[0] === i && selectedElement[1] === j;
-      const isSameAsSelected = isSelected || grid[i][j] === grid[selectedElement[0]][selectedElement[1]];
+      const isSameAsSelected = isSelected || grid[i][j] === grid[selectedElement[0]][selectedElement[1]] && grid[i][j] !== 0;
       const isHighlighted = i == selectedElement[0] 
         || j == selectedElement[1] 
         || (Math.floor(i / 3) === Math.floor(selectedElement[0] / 3) && Math.floor(j / 3) === Math.floor(selectedElement[1] / 3));
@@ -62,7 +46,7 @@ export const SudokuGrid = () => {
             setSelectedElement([i, j]);
         }}>
           <View>
-            {grid[i][j] !== -1 && 
+            {grid[i][j] !== 0 && 
               <Text style={{
                 color: isUnmodifiable ? '#fff' : '#0072e3',
                 fontSize: 30,
