@@ -81,7 +81,6 @@ const createRandomGrid = () => {
 }
 
 const styles = StyleSheet.create({
-  // style the grid
   sudokuGrid: {
     width: '90%',
     aspectRatio: 1,

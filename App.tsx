@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { NumberInputBar } from './components/NumberInputBar';
 import { SudokuGrid } from './components/SudokuGrid';
 
 export default function App() {
@@ -7,6 +8,7 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.title}>Sudoku</Text>
       <SudokuGrid />
+      <NumberInputBar />
     </View>
   );
 }
